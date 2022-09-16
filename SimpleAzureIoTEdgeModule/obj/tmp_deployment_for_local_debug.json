@@ -1,5 +1,4 @@
 {
-  "$schema-template": "2.0.0",
   "modulesContent": {
     "$edgeAgent": {
       "properties.desired": {
@@ -16,12 +15,8 @@
           "edgeAgent": {
             "type": "docker",
             "settings": {
-              "image": "mcr.microsoft.com/azureiotedge-agent:DEFAULT_RT_IMAGE",
-              "createOptions": {
-                "HostConfig": {
-                  "Binds": [ "/var/iotedge/edgeAgent:/storage" ]
-                }
-              }
+              "image": "mcr.microsoft.com/azureiotedge-agent:1.2",
+              "createOptions": "{\"HostConfig\":{\"Binds\":[\"/var/iotedge/edgeAgent:/storage\"]}}"
             },
             "env": {
               "storageFolder": {
@@ -34,29 +29,8 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "mcr.microsoft.com/azureiotedge-hub:DEFAULT_RT_IMAGE",
-              "createOptions": {
-                "HostConfig": {
-                  "Binds": [ "/var/iotedge/edgeHub:/storage" ],
-                  "PortBindings": {
-                    "5671/tcp": [
-                      {
-                        "HostPort": "5671"
-                      }
-                    ],
-                    "8883/tcp": [
-                      {
-                        "HostPort": "8883"
-                      }
-                    ],
-                    "443/tcp": [
-                      {
-                        "HostPort": "443"
-                      }
-                    ]
-                  }
-                }
-              }
+              "image": "mcr.microsoft.com/azureiotedge-hub:1.2",
+              "createOptions": "{\"HostConfig\":{\"Binds\":[\"/var/iotedge/edgeHub:/storage\"],\"PortBindings\":{\"5671/tcp\":[{\"HostPort\":\"5671\"}],\"8883/tcp\":[{\"HostPort\":\"8883\"}],\"443/tcp\":[{\"HostPort\":\"443\"}]}}}"
             },
             "env": {
               "storageFolder": {
@@ -66,16 +40,6 @@
           }
         },
         "modules": {
-          "IotEdgeModule1": {
-            "version": "1.0.0",
-            "type": "docker",
-            "status": "running",
-            "restartPolicy": "always",
-            "settings": {
-              "image": "${MODULEDIR<../IotEdgeModule1>}",
-              "createOptions": {}
-            }
-          },
           "SimulatedTemperatureSensor": {
             "version": "1.0",
             "type": "docker",
@@ -83,7 +47,7 @@
             "restartPolicy": "always",
             "settings": {
               "image": "mcr.microsoft.com/azureiotedge-simulated-temperature-sensor:1.0",
-              "createOptions": {}
+              "createOptions": "{}"
             }
           }
         }
